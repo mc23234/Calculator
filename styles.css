@@ -88,12 +88,10 @@ body{
 	color:white;
 }
 
-.backspace code{
-	font-size:3.5rem;
-}
 
 .equals{
 	background:darkgreen;
+	grid-area:5/3/5/5;
 }
 
 

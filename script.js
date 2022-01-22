@@ -3,6 +3,7 @@ const display = document.querySelector('.display');
 const clear = document.querySelector('.clear');
 const operatorBtn = document.querySelectorAll('.operator');
 const backBtn = document.querySelector('.backspace');
+const decimal = document.querySelector('.decimal');
 
 let numArray = [];
 let operator = '';
@@ -12,20 +13,17 @@ let result = '';
 //functions 
 
 function displayNums(){
-	
 	nums.forEach((num) => {
-	
-			num.addEventListener('click',() => {
-										
-					digits += num.textContent;
+		num.addEventListener('click',() => {
+					if(digits.length < 10)
+						digits += num.textContent;
 					display.textContent = digits;
-				});
 		});
+	});
 }
 
 function backspace(){
 		backBtn.addEventListener('click', () => {
-				
 				if(digits.length === 1)
 					display.textContent = '0';
 				
@@ -34,28 +32,37 @@ function backspace(){
 					display.textContent = digits;
 				}
 				else if (digits === ''){
-					digits = display.textContent;
-					digits = digits.slice(0,digits.length-1);
-					display.textContent = digits;
+					if(display.textContent === '0')
+						display.textContent = '0';
+					else{
+						digits = display.textContent;
+						digits = digits.slice(0,digits.length-1);
+						display.textContent = digits;
+					}
 				}
 		});
 }
 
+decimal.addEventListener('click', () => {
+		
+		display.textContent = '.' + digits ;
+		digits += '.';
+		
+		console.log(digits);
+});
 
 function displayOperator(){
-	
 		operatorBtn.forEach((op) => {
-			
 			op.addEventListener('click',() => {
 				
-				let temp = parseInt(digits);
+				let temp = parseFloat(digits);
 				
 				if(temp === 0 || temp){
-					numArray.push(parseInt(digits));
+					numArray.push(parseFloat(digits));
 					digits = '';
 				}
 				
-				
+
 				if(numArray.length === 1 && op.textContent === '%')
 					result = operateFunction(numArray,op.textContent);
 				
@@ -63,28 +70,16 @@ function displayOperator(){
 					result = operateFunction(numArray,operator);
 				
 				else if(numArray.length === 2){
-					if(operator === '=')
+					if(operator === '='){
 						operator = op.textContent;
-
-					numArray.shift();		
+						numArray.shift();
+					}
+							
 					result = operateFunction(numArray,operator);
 				}
 						
 				operator = op.textContent;
-				
-				
-				if(result){
-					
-					numArray = [];
-					
-					if((result*10)%10 != 0)
-						display.textContent = result.toFixed(3);
-					
-					else
-						display.textContent = result;
-					
-					numArray.push(result);
-				}
+				displayResult(result);
 				
 			});
 	});
@@ -103,6 +98,50 @@ function clearDisplay(){
 	});
 }
 
+function displayResult(result){
+	if(result){
+
+		numArray = [];
+					
+		if((result*10)%10 != 0){
+						
+			if(result.toString().length > 12){
+				if(result < 0)
+					display.textContent =   Math.abs(result) + '-';
+						
+				else
+					display.textContent = result.toExponential(3);
+			}
+			
+			else{
+				if(result < 0)
+					display.textContent =   Math.abs(result) + '-';
+				else 
+					display.textContent = result.toFixed(3);
+			}
+		}
+					
+		else{
+						
+			if(result.toString().length > 10){
+				if(result < 0)
+					display.textContent =   Math.abs(result) + '-';
+				else
+					display.textContent = result.toExponential(3);
+			}
+						
+			else{
+				if(result < 0)
+					display.textContent =   Math.abs(result) + '-';
+			    else
+			    	display.textContent = result;
+			}
+						
+		}
+					
+		numArray.push(result);
+	}	
+}
 
 
 
@@ -112,15 +151,6 @@ clearDisplay();
 displayOperator();
 displayNums();
 backspace();
-
-
-
-
-
-
-
-
-
 
 
 // Logic
