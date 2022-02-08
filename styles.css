@@ -51,7 +51,8 @@ body{
 	align-items:center;
 	padding:5px;
 	border-bottom:5px solid black;
-	direction:rtl;
+	display:flex;
+	justify-content:flex-end;
 }
 
 .keys{
@@ -91,7 +92,6 @@ body{
 
 .equals{
 	background:darkgreen;
-	grid-area:5/3/5/5;
 }
 
 
