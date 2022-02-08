@@ -137,8 +137,10 @@ function displayResult(result){
 		numArray.push(result);
 		screenNums = result;
 	}
-	else if(result === 0 && numArray.length === 2)					//For displaying result when one operand is 0
+	else if(result === 0 && numArray.length === 2){					//For displaying result when one operand is 0
+		numArray = [result];
 		display.textContent = result;
+	}
 }
 
 
